@@ -2,14 +2,14 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-app.use('/books', require('./api/books'));
-
 app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.originalUrl}`);
   next();
 });
+
+app.use('/books', require('./api/books'));
 
 app.use((req, res, next) => {
   next({status: 404, message: 'Endpoin not found.'});
@@ -20,3 +20,5 @@ app.use((err, req, res, next) => {
   res.status(err.status ?? 500);
   res.json(err.message ?? 'Sorry, something went wrong');
 });
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
